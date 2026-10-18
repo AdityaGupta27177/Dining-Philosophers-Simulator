@@ -1,0 +1,347 @@
+/* ==========================================================================
+   DINING PHILOSOPHERS SIMULATOR - BRIGHT & LUMINOUS LUXURY STYLESHEET
+   Apple / Stripe Inspired High-End Concurrency Visualizer
+   ========================================================================== */
+
+:root {
+  --bg-canvas: #f8fafc;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #ffffff;
+  --bg-surface: #f1f5f9;
+  --border-glass: rgba(226, 232, 240, 0.85);
+  --border-focus: #3b82f6;
+
+  /* Vibrant Luxury Jewel-Tone State Accents */
+  --state-thinking: #0284c7;    /* Radiant Sky Blue */
+  --state-hungry: #d97706;      /* Luminous Amber Gold */
+  --state-eating: #059669;      /* Emerald Mint Green */
+  --state-blocked: #ea580c;     /* Persimmon Orange */
+  --state-deadlock: #dc2626;    /* Vivid Ruby Crimson */
+
+  /* Text Hierarchy */
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 25px -4px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.08), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
+  --shadow-glow-deadlock: 0 0 35px rgba(220, 38, 38, 0.25);
+}
+
+/* Base Body Setup */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  background-image: 
+    radial-gradient(circle at 12% 15%, rgba(99, 102, 241, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  background-attachment: fixed;
+  color: var(--text-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Panel Tokens */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-md);
+  border-radius: 1.15rem;
+}
+
+.glass-panel-subtle {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.glass-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.07);
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ==========================================================================
+   VIBRANT ACTION BUTTONS WITH POLISHED SHADOWS
+   ========================================================================== */
+.btn-glow {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+  transition: opacity 0.2s ease;
+}
+.btn-glow:hover::after { opacity: 1; }
+
+.btn-start {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+.btn-start:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+  transform: translateY(-1.5px);
+}
+
+.btn-stop {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+.btn-stop:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  transform: translateY(-1.5px);
+}
+
+.btn-reset {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+}
+.btn-reset:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+  transform: translateY(-1.5px);
+}
+
+.btn-recover-glow {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.4);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  animation: recoverPulseBright 1.6s infinite;
+}
+.btn-recover-glow:hover:not(:disabled) {
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.65);
+  transform: scale(1.02);
+}
+
+@keyframes recoverPulseBright {
+  0%, 100% { box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35); transform: scale(1); }
+  50% { box-shadow: 0 8px 25px rgba(239, 68, 68, 0.65); transform: scale(1.02); }
+}
+
+/* ==========================================================================
+   DEADLOCK SCREEN SHAKE & BANNER (LUMINOUS CORAL ALERT)
+   ========================================================================== */
+.screen-shake {
+  animation: shakeAnimation 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shakeAnimation {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(3px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.deadlock-glow-banner {
+  background: linear-gradient(90deg, #fef2f2 0%, #fee2e2 50%, #fef2f2 100%);
+  border: 1.5px solid #ef4444;
+  box-shadow: 0 8px 30px rgba(239, 68, 68, 0.2);
+  animation: bannerPulseBright 2s infinite ease-in-out;
+}
+
+@keyframes bannerPulseBright {
+  0%, 100% { border-color: #ef4444; box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2); }
+  50% { border-color: #dc2626; box-shadow: 0 12px 35px rgba(239, 68, 68, 0.35); }
+}
+
+/* ==========================================================================
+   HERO SVG TABLE CANVAS (BRUSHED ITALIAN MARBLE STYLE)
+   ========================================================================== */
+.table-canvas-container {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+.cosmic-ring {
+  fill: none;
+  stroke: rgba(99, 102, 241, 0.2);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 8;
+  animation: rotateRing 60s linear infinite;
+  transform-origin: 300px 300px;
+}
+
+.cosmic-ring-reverse {
+  fill: none;
+  stroke: rgba(14, 165, 233, 0.2);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 12;
+  animation: rotateRingReverse 80s linear infinite;
+  transform-origin: 300px 300px;
+}
+
+@keyframes rotateRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rotateRingReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+/* Eating Progress Ring */
+.eating-progress-ring {
+  stroke: #10b981;
+  stroke-width: 3.5;
+  fill: none;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: eatProgress 1.5s ease-in-out infinite;
+}
+
+@keyframes eatProgress {
+  0% { stroke-dashoffset: 220; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.hungry-pulse {
+  animation: hungryPulseBright 1.2s infinite ease-in-out;
+}
+
+@keyframes hungryPulseBright {
+  0%, 100% { stroke-width: 3; stroke: #f59e0b; opacity: 1; }
+  50% { stroke-width: 6; stroke: #fbbf24; opacity: 0.8; }
+}
+
+.deadlock-arrow-path {
+  stroke-dasharray: 6 6;
+  animation: dashFlow 1s linear infinite;
+}
+
+@keyframes dashFlow {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ==========================================================================
+   DEVELOPER TERMINAL INSET (STRIPE / VERCEL STYLE)
+   ========================================================================== */
+.terminal-window {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 0.85rem;
+  font-family: var(--font-mono);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+}
+
+.terminal-header {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  padding: 0.55rem 0.95rem;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   DEMO MODE OVERLAY MODAL (RADIANT ROYAL PURPLE)
+   ========================================================================== */
+.demo-overlay-banner {
+  background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 45px rgba(79, 70, 229, 0.35);
+  backdrop-filter: blur(20px);
+  border-radius: 1.25rem;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS (CRISP WHITE GLASS CARDS)
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  min-width: 320px;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  padding: 0.9rem 1.2rem;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.95); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.toast-item.info { border-left: 4px solid #0284c7; }
+.toast-item.success { border-left: 4px solid #059669; }
+.toast-item.warning { border-left: 4px solid #d97706; }
+.toast-item.danger { border-left: 4px solid #dc2626; box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2); }
+
+/* Range Slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  height: 6px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #2563eb;
+}
